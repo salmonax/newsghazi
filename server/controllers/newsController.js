@@ -1,5 +1,7 @@
 var News = require('../models/newsModel.js');
 var url = require('url');
+var aylienAPI = require('../aylien/aylienController.js');
+
 
 var sendJSONresponse = function (res, status, content) {
 	res.status(status);
@@ -7,6 +9,19 @@ var sendJSONresponse = function (res, status, content) {
 }
 
 module.exports = {
+	extractArticle: function (req, res, next) {
+		if (req.body.url) {
+			console.log(req.body.url);
+			aylienAPI.extractAsync({
+			  url: req.body.url,
+			  best_image: false
+			}).then(content => {
+				console.log("this is happening");
+				console.log(content.article);
+				sendJSONresponse(res, 200, { "message": content.article });
+			});
+		}
+	},
   isFakeNews: function (req, res, next) {
 		if (req.body.url) {
 			var domain = req.body.url.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
