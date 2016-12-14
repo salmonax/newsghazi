@@ -23,7 +23,7 @@ angular.module('newsgate.bubble', [])
       // define scale
       var scale = d3.scaleSqrt() // automatically converts to scale
         .domain([0.6, 1]) // range of input data
-        .range([30, 100]); // range of output data
+        .range([40, 120]); // range of output data
 
       // create svg
       var svg = d3.select(element[0]).append("svg")
@@ -54,6 +54,7 @@ angular.module('newsgate.bubble', [])
           .remove();
 
         // generate new bubbles
+        //var lowest = data[11].relevance;
         var allBubbles = svg.selectAll('circles').data(data)
         .enter().append("circle")
           .attr("class", ".keyword")
@@ -62,6 +63,8 @@ angular.module('newsgate.bubble', [])
             if (relevance < 0.6) {
               relevance = 0.6;
             }
+            //return scale(relevance);
+            console.log('d', d);
             return scale(relevance);
           })
           .attr('stroke', 'steelblue')
@@ -89,7 +92,7 @@ angular.module('newsgate.bubble', [])
         .enter().append('text')
           .attr('class', 'bubbleText')
           .attr('text-anchor', 'middle')
-          .text(function(d) { return d.text.split(' ')[0]});
+          .text(function(d) { return d.text});
 
         // define simulation
         simulation = d3.forceSimulation()
@@ -100,7 +103,8 @@ angular.module('newsgate.bubble', [])
            if (relevance < 0.6) {
              relevance = 0.6;
            }
-           return scale(relevance) + 4;
+          //  return scale(relevance) + 4;
+          return scale(relevance) + 4;
          }));
 
         // reset position every interval during simulation

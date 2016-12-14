@@ -30,7 +30,8 @@ module.exports.getTitle = function(req, res, next) {
 
 module.exports.getKeywords = function(req, res, next) {
 	var parameters = {
-		url: req.body.url
+		url: req.body.url,
+		maxRetrieve: 12
 	}
 
 	alchemy_language.keywords(parameters, function (err, response) {
