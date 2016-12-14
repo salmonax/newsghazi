@@ -7,6 +7,7 @@ server/watson/api_key.txt
 server/watson/watson_api_key.js
 server/trends/googleTrendsCookie.js
 server/trends/twitterAPIKey.js
+server/aylien/aylien_api_key.js
 client/node_modules
 
 #PersonalNotes
