@@ -130,12 +130,15 @@ getCurrentTabUrl(function(tabUrl) {
     dataType: 'json'
   })
   .done(function (json) {
+    alert(JSON.stringify(json.message));
     console.log(json);
     var rating = '';
     if ((json.fake.rating.score + '') === '0') {
       rating = 'This page does not exist in our Fake News blacklist.';
     } else if ((json.fake.rating.score + '') === '100') {
       rating = 'WARNING: This page is hosted on a domain that has been blacklisted because of fake news.';
+    } else {
+      rating = json.message;
     }
     $("<h1>").text(rating).appendTo('body');
   })
