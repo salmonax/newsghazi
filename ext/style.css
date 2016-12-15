@@ -1,0 +1,43 @@
+body {
+  font-family: "Trebuchet MS", "Lucida Grande", Tahoma, sans-serif;
+  font-size: 100%;
+}
+
+
+
+.component {
+  margin-top: 6px;
+  padding: 6px;
+  background-color: #EEE;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  width: 350px
+}
+
+.component.disabled {
+  background-color: #eee;
+
+}
+
+.component[aria-invalid] {
+  background-color: #f99;
+}
+
+.component[aria-invalid] input {
+  color: #900;
+}
+
+.component input {
+
+}
+
+.component.disabled input {
+  color: #999;
+}
+
+.componentTitle {
+  font-weight: bold;
+  font-size:20px;
+}
+
+

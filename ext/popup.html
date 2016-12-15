@@ -1,39 +1,55 @@
 <!doctype html>
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
-      }
-    </style>
-
+    <title>NewsGhazi</title>
+    <link rel="stylesheet" href="./style.css">
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
+      - Policy documentation[1] for details and explanation.s
       -
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->  
+     -->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
      <script src="popup.js"></script>
-  
+
+
   </head>
   <body>
-    <div id="status"></div>
-    <img id="image-result" hidden>
+
+  <div id="main">
+    <div id="component1" class="reliability component">
+      <label class="componentTitle">Reliability</label>
+      <br>
+      <div>
+        <div class="relImage"></div>
+        <div class="relText"></div>
+      </div>
+    </div>
+
+    <div id="component2" class="sentiment component">
+      <label class="componentTitle">Sentiment</label>
+      <br>
+      <div class="sentimentwordCount"></div>
+      <div class="sentimentValue"></div>
+      <div class="sentimentMagnitude"></div>
+    </div>
+
+    <div id="component3" class="keyWord component">
+      <label class="componentTitle">Key Sentences</label>
+      <br>
+      <button id="">Find Strong Sentiments</button>
+      <div class="image-result"></div>
+    </div>
+
+    <div id="component4" class="relatedArticles component">
+      <label class="componentTitle">Related Articles</label>
+      <br>
+      <div class="relatedArticles"></div>
+      <div class="image-result"></div>
+    </div>
+
+
+  </div>
   </body>
 </html>
 

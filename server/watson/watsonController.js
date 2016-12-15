@@ -7,25 +7,26 @@ for more information see https://www.ibm.com/watson/developercloud/alchemy-langu
 var watson = require('watson-developer-cloud');
 var watsonKey = require('./watson_api_key.js');
 var alchemy_language = watson.alchemy_language({
-	api_key: watsonKey.watsonKey
+  api_key: watsonKey.watsonKey
 });
 
 
 module.exports.getTitle = function(req, res, next) {
-	console.log('request body', req.body.url);
-	var parameters = {
-		url: req.body.url
-	}
+  console.log('request body', req.body.url);
+  var parameters = {
+    url: req.body.url
+  };
 
-	alchemy_language.title(parameters, function (err, response) {
-	  if (err)
-	    console.log('error:', err);
-	  else
-	    console.log(JSON.stringify(response, null, 2));
-			res.compoundContent = res.compoundContent || {};
-			res.compoundContent['title'] = response;
-			next();
-	})
+  alchemy_language.title(parameters, function (err, response) {
+    if (err) {
+      console.log('error:', err);
+    } else {
+      console.log(JSON.stringify(response, null, 2));
+      res.compoundContent = res.compoundContent || {};
+      res.compoundContent['title'] = response;
+      next();
+    }
+  });
 };
 
 module.exports.getKeywords = function(req, res, next) {
@@ -34,12 +35,13 @@ module.exports.getKeywords = function(req, res, next) {
 		maxRetrieve: 12
 	}
 
-	alchemy_language.keywords(parameters, function (err, response) {
-	  if (err)
-	    console.log('error:', err);
-	  else
-	  	res.compoundContent['keywords'] = response;
-		next();
-	    console.log(JSON.stringify(response, null, 2));
-	})
-}
+  alchemy_language.keywords(parameters, function (err, response) {
+    if (err) {
+      console.log('error:', err);
+    } else {
+      res.compoundContent['keywords'] = response;
+    }
+    next();
+    console.log(JSON.stringify(response, null, 2));
+  });
+};
