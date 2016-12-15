@@ -31,6 +31,12 @@ angular.module('newsgate', [
   });
 
 })
-.run(['$anchorScroll', function($anchorScroll) {
+.run(function($anchorScroll, $rootScope, $location, Data) {
   $anchorScroll.yOffset = 50;
-}]);
+
+  $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+    if (Data.keywords.keywords.length === 0) {
+      $location.path('/');
+    }
+  });
+});
