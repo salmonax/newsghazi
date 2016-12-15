@@ -3,6 +3,8 @@ var newsController = require('../controllers/newsController.js');
 var watsonController = require('../watson/watsonController.js');
 const googleTrends = require('../trends/googleTrends');
 const twitterSearch = require('../trends/twitterTrends');
+const aylien = require('../aylien/aylienController.js');
+const googleLanguage = require('../googleLanguage/googleLanguageController.js');
 
 module.exports = function (app, express) {
 
@@ -24,10 +26,25 @@ module.exports = function (app, express) {
                     ], function(req,res,next){
     res.json(res.compoundContent);
   });
+
+
+  app.post('/api/ext', function(req, res, next) {
+    console.log(res);
+  });
   // app.post('/api/ext', newsController.isFakeNews , function(req,res,next){
   //   res.json(res.compoundContent);
   // });
-  app.post('/api/ext', newsController.extractArticle);
+  // app.post('/api/ext', aylien.extractArticle, googleLanguage.analyzeSentiment, function(req, res, next) {
+  //     console.log(res.compoundContent.article);
+
+  //     console.log(res.compoundContent.sentiment);
+  //     res.compoundContent.articleLength = res.compoundContent.article.split(' ').length;
+  //     res.json(res.compoundContent);
+  // });
+
+  app.post('/api/ext', function(req, res, next) {
+    console.log(req);
+  });
 
   app.post('/apitest', watsonController.getTitle);
   app.get('/api/googleTrends', googleTrends.getGoogleTrends);
