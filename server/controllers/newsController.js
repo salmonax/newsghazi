@@ -9,9 +9,23 @@ var sendJSONresponse = function (res, status, content) {
 };
 
 module.exports = {
+  passExtensionData: function(req, res, next) {
+    if (req.body.url && req.body.scraped) {
+      res.compoundContent = res.compoundContent || {};
+      res.compoundContent.url = req.body.url;
+      res.compoundContent.article = req.body.scraped;
+      next();
+    } else {
+      console.log('No article or scraped content specified.')
+      sendJSONResponse(res, 404, {
+        "message": "Missing required data in request."
+      });
+    }
+  },
   isFakeNews: function (req, res, next) {
-    if (req.body.url) {
-      var domain = req.body.url.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
+    if (req.body.url || res.compoundContent.url) {
+      var url = req.body.url || res.compoundContent.url;
+      var domain = url.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
       domain = domain.replace(/^www\./, ''); // Strip off www.
       domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)
       if (domain) {
