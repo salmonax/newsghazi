@@ -3,6 +3,7 @@
 node_modules
 bower_components
 client/lib
+server/googleLanguage/googleLanguageKey.json
 server/watson/api_key.txt
 server/watson/watson_api_key.js
 server/trends/googleTrendsCookie.js
