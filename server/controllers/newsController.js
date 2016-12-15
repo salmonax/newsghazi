@@ -1,7 +1,5 @@
 var News = require('../models/newsModel.js');
 var url = require('url');
-var aylienAPI = require('../aylien/aylienController.js');
-
 
 var sendJSONresponse = function (res, status, content) {
 	res.status(status);
