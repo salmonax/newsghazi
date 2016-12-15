@@ -1,5 +1,6 @@
 #Dependencies
 **/.DS_store
+**/npm-debug.log
 node_modules
 bower_components
 client/lib
