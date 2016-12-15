@@ -27,8 +27,6 @@ module.exports = function (app, express) {
   app.post('/api/ext', newsController.isFakeNews , function(req,res,next){
     res.json(res.compoundContent);
   });
-//   app.post('/api/ext', newsController.extractArticle);
-
   app.post('/apitest', watsonController.getTitle);
   app.get('/api/googleTrends', googleTrends.getGoogleTrends);
   app.get('/twitter', twitterSearch.getTweetsOnTopic);
