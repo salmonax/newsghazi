@@ -28,19 +28,19 @@ module.exports = function (app, express) {
   });
 
 
-  app.post('/api/ext', function(req, res, next) {
-    console.log(res);
-  });
+  // app.post('/api/ext', function(req, res, next) {
+  //   console.log(res);
+  // });
   // app.post('/api/ext', newsController.isFakeNews , function(req,res,next){
   //   res.json(res.compoundContent);
   // });
-  // app.post('/api/ext', aylien.extractArticle, googleLanguage.analyzeSentiment, function(req, res, next) {
-  //     console.log(res.compoundContent.article);
+  app.post('/api/ext', newsController.passExtensionData, googleLanguage.analyzeSentiment, function(req, res, next) {
+      console.log(res.compoundContent.article);
 
-  //     console.log(res.compoundContent.sentiment);
-  //     res.compoundContent.articleLength = res.compoundContent.article.split(' ').length;
-  //     res.json(res.compoundContent);
-  // });
+      console.log(res.compoundContent.sentiment);
+      res.compoundContent.articleLength = res.compoundContent.article.split(' ').length;
+      res.json(res.compoundContent);
+  });
 
   app.post('/api/ext', function(req, res, next) {
     console.log(req);
