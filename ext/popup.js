@@ -1,3 +1,7 @@
+$(function() {
+  $('.emotion.component').load('_emotion.html');
+});
+
 
 // The following will open a connection with the active tab
 // when the extension is open
@@ -53,7 +57,7 @@ function failToPopulate(xhr, status, errorThrown) {
 }
 
 function postTextAndUrl(data) {
-  alert(data);
+  // alert(data);
   return $.ajax({
     url: 'http://localhost:8000/api/ext',
     type: 'POST',
