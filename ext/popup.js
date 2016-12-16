@@ -1,5 +1,30 @@
 $(function() {
-  $('.emotion.component').load('_emotion.html');
+  var mockJSON = {
+    "anger": "0.639028",
+    "disgust": "0.009711",
+    "fear": "0.037295",
+    "joy": "4e-05",
+    "sadness": "0.002552"
+  };
+  var values = Object.keys(mockJSON).map(key => 
+    parseFloat(mockJSON[key]));
+
+  $('.emotion.component').load('_emotion.html', initEmotions);
+
+  function initEmotions() {
+    $('.summary-emotion-graph--row').each(function(index) {
+      var $this = $(this);
+      var val = values[index];
+      var barWidth = (val*100).toFixed(2)+'%'
+      var labelValue = val.toFixed(2);
+      var likelihood = (val > 0.5) ? "LIKELY" : "UNLIKELY";
+      $this.find('.summary-emotion-graph--bar-value').css('width',barWidth);
+      var labels = $this.find('.summary-emotion-graph--percentage-label').find('span');
+      $(labels[0]).text(labelValue);
+      $(labels[1]).text(likelihood);
+    });
+  }
+
 });
 
 
@@ -49,7 +74,7 @@ function populatePanel(json) {
 }
 
 function failToPopulate(xhr, status, errorThrown) {
-  alert('fail');
+  // alert('fail');
   console.log( "Error: " + errorThrown );
   console.log( "Status: " + status );
   console.log()

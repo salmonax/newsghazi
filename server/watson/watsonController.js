@@ -11,6 +11,22 @@ var alchemy_language = watson.alchemy_language({
 });
 
 
+module.exports.getEmotions = function(req, res, next) {
+  // No error checking if first in chain; assumes url already set
+  var params = {
+    url: res.compoundContent.url
+  }
+  alchemy_language.emotion(params, function (err, response) {
+    if (err)
+      console.log('error:', err);
+    else
+      res.compoundContent = res.compoundContent || {};
+      res.compoundContent['emotion'] = response;
+      // console.log(JSON.stringify(response, null, 2));
+      next();
+  });
+};
+
 module.exports.getTitle = function(req, res, next) {
   console.log('request body', req.body.url);
   var parameters = {
