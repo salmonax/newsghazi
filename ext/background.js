@@ -16,7 +16,7 @@ function handleMessage(msg) {
 // Sends url and scraped text:
 function scrapeAndSend(port) {
   var url = window.location.href;
-  var scrapedText = $('p').toArray().map(item => item.innerText).join(' ');
+  var scrapedText = $('p').toArray().map(item => item.innerText).join(' ').replace(/[\r\n]/g, '');
   port.postMessage({"scraped": scrapedText, "url": url});
 };
 

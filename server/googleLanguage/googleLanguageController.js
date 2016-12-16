@@ -28,6 +28,7 @@ exports.analyzeSentiment = function (req, res, next) {
   }
   // console.log(article);
   languageClient.detectSentiment(article, { verbose: true }, function(err, sentiment) {
+      res.compoundContent = res.compoundContent || {};
       res.compoundContent['sentiment'] = sentiment;
       next();
   });
