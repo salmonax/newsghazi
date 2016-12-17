@@ -5,13 +5,12 @@ console.log('injected1');
 // The following waits for a connection from the 
 // extension in order to make a reverse connection. 
 
-chrome.extension.onConnect.addListener(function(msg) {
-  var port = chrome.extension.connect({name:"newsgate"});
-  port.postMessage({"method":'getContentAndUrl', "data": actions.getContentAndUrl()});
-  port.onMessage(function(message, sender, response) { 
-    response({"method": message.method, "data": actions[req.method]()}); 
-  });
+chrome.extension.onConnect.addListener(function(portToBackground){
+  var portToExtension = chrome.extension.connect({name: "newsgate"});
+  portToExtension.postMessage({"method":'getContentAndUrl', "data": actions.getContentAndUrl()});
+  portToBackground.onMessage.addListener(handleMessage);
 });
+
 
 //Event Listeners:
 // chrome.extension.onConnect.addListener(function(port){
