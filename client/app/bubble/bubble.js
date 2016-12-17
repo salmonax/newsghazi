@@ -101,7 +101,7 @@ angular.module('newsgate.bubble', [])
            if (relevance < minimum) {
              relevance = minimum;
            }
-          return scale(relevance) +4;
+           return scale(relevance) +4;
          }));
 
         // reset position every interval during simulation
