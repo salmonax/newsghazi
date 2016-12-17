@@ -35,12 +35,8 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 });
 
 //add event listener on connect
-chrome.runtime.onConnect.addListener(function(port) {
-   console.log(port);
-   port.onMessage.addListener(function(message){
-     handleMessage(message);
-   });
-
+chrome.extension.onConnect.addListener(function(portToExtension){
+  portToExtension.onMessage.addListener(handleMessage);
 });
 
 chrome.commands.onCommand.addListener(function(command) {
