@@ -9,7 +9,6 @@ chrome.extension.onConnect.addListener(function(portToBackground){
   var portToExtension = chrome.extension.connect({name: "newsgate"});
   portToExtension.postMessage({"method":'getContentAndUrl', "data": actions.getContentAndUrl()});
   portToBackground.onMessage.addListener(handleMessage);
-  scrapeAndSend(portToExtension);
 });
 
 
