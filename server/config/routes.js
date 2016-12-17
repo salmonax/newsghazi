@@ -9,20 +9,20 @@ const googleLanguage = require('../googleLanguage/googleLanguageController.js');
 module.exports = function (app, express) {
 
 /*  This middlware builds the response object starting with the URL expansion
-  and tacking on the successive API calls by calling the controllers' next() 
+  and tacking on the successive API calls by calling the controllers' next()
   function.
 
-  You'll likely want to improve upon this by creating different endpoints with 
+  You'll likely want to improve upon this by creating different endpoints with
   different middleware pipes e.g. a pipe to just poll the blacklist, or a pipe
-  just for talking to Watson and so forth. 
+  just for talking to Watson and so forth.
 
 */
   app.post('/api', [expanderController.expandURL,
                     newsController.isFakeNews,
-                    watsonController.getTitle,
-                    watsonController.getKeywords,
+                    // watsonController.getTitle,
+                    // watsonController.getKeywords,
                     twitterSearch.getTweetsOnTopic,
-                    googleTrends.getGoogleTrends
+                    // googleTrends.getGoogleTrends
                     ], function(req,res,next){
     res.json(res.compoundContent);
   });

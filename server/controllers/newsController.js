@@ -26,6 +26,7 @@ module.exports = {
     if (req.body.url || res.compoundContent.url) {
       var url = req.body.url || res.compoundContent.url;
       var domain = url.replace(/^https?:\/\//,''); // Strip off https:// and/or http://
+
       domain = domain.replace(/^www\./, ''); // Strip off www.
       domain = domain.split('/')[0]; // Get the domain and just the domain (not the path)
       if (domain) {
