@@ -5,12 +5,12 @@ for more information see https://www.ibm.com/watson/developercloud/alchemy-langu
 
 */
 var watson = require('watson-developer-cloud');
-var watsonKey = require('./watson_api_key.js');
+var keylist = require('../keys/keylist.js');
 var alchemy_language = watson.alchemy_language({
-  api_key: watsonKey.watsonKey
+  api_key: keylist.watsonKey
 });
 var alchemy_data_news = watson.alchemy_data_news({
-  api_key: watsonKey.watsonKey
+  api_key: keylist.watsonKey
 });
 
 
