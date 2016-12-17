@@ -9,13 +9,13 @@ $(function() {
   var values = Object.keys(mockJSON).map(key => 
     parseFloat(mockJSON[key]));
 
-  $('.emotion.component').load('_emotion.html', initEmotions);
+  $('.emotion.component').load('emotion.html', initEmotions);
 
   function initEmotions() {
     $('.summary-emotion-graph--row').each(function(index) {
       var $this = $(this);
       var val = values[index];
-      var barWidth = (val*100).toFixed(2)+'%'
+      var barWidth = (val*100).toFixed(2)+'%';
       var labelValue = val.toFixed(2);
       var likelihood = (val > 0.5) ? "LIKELY" : "UNLIKELY";
       $this.find('.summary-emotion-graph--bar-value').css('width',barWidth);
@@ -34,18 +34,40 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   chrome.tabs.connect(tabs[0].id, {name: "background"});
 });
 
-chrome.extension.onConnect.addListener(function(reversePort){
-  reversePort.onMessage.addListener(handleMessage);
+//add event listener on connect
+chrome.runtime.onConnect.addListener(function(port) {
+   console.log(port);
+   port.onMessage.addListener(function(message){
+     handleMessage(message);
+   });
+
+});
+
+chrome.commands.onCommand.addListener(function(command) {
+  if(command === 'getUserSelectedText') {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {method: "getUserSelectedText"}, function(res) {
+      console.log('got the command.');
+      console.log(res.data);
+    });
+  });
+  }
 });
 
 function handleMessage(msg) {
-  // Handle any message posted from the background tab
-  if (msg.scraped && msg.url) {
-    postTextAndUrl(msg)
-    .done(populatePanel)
-    .fail(failToPopulate);
+  console.log(msg);
+  popupAction[msg.method](msg);
+};
+
+const popupAction = {
+  getUserSelectedText: function(msg) {
+    postToServer(msg).done(populatePanel).fail(failToPopulate);
+  },
+  getContentAndUrl: function(msg) {
+    postToServer(msg).done(populatePanel).fail(failToPopulate);
   }
-}
+};
+
 
 function populatePanel(json) {
   // Handle all panel population from the extension endpoint here

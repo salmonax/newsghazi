@@ -1,17 +1,53 @@
-// The following waits for a connection from the 
-// extension in order to make a reverse connection.
+console.log('injected1');
 
-chrome.extension.onConnect.addListener(function(port){
-  var reversePort = chrome.extension.connect({name: "newsgate"});
-  port.onMessage.addListener(handleMessage);
-  scrapeAndSend(reversePort);
+
+
+// The following waits for a connection from the 
+// extension in order to make a reverse connection. 
+
+chrome.extension.onConnect.addListener(function(msg) {
+  var port = chrome.extension.connect({name:"newsgate"});
+  port.postMessage({"method":'getContentAndUrl', "data": actions.getContentAndUrl()});
+  port.onMessage(function(message, sender, response) { 
+    response({"method": message.method, "data": actions[req.method]()}); 
+  });
 });
 
+//Event Listeners:
+// chrome.extension.onConnect.addListener(function(port){
+//   var reversePort = chrome.extension.connect({name: "newsgate"});
+//   port.onMessage.addListener(handleMessage.bind(null, reversePort)); //this is not working.
+//   //default behaviour on connect:
+//   reversePort.postMessage({"method":"getContent", "content": actions.scrapeAll(), "url":actions.getUrl()});
+// });
 
-function handleMessage(msg) {
-  // Handle any message posted from the extension
-  // alert(msg);
+  
+function handleMessage(msg, port) {
+  console.log(msg);
+  var data = actions[msg.method]();
+  port.postMessage({"method":msg.method, "data": data});
 };
+
+//add extension -- background.js communication methods here:
+const actions = {
+  getContentAndUrl: function(){
+    return { scraped: $('p').toArray().map(item => item.innerText).join(' ').replace(/[\r\n]/g, ''), 
+              url: window.location.href };
+  },
+  getUserSelectedText: function() {
+    return window.getSelection().toString();
+  },
+  getUrl: function() {
+    return window.location.href;
+  },
+  scrapePlain: function(){
+    return $('p').toArray().map(p => p.innerText).join(' ');
+  },
+  highlight: function(mode) {
+
+  }
+};
+
 
 // Sends url and scraped text:
 function scrapeAndSend(port) {
@@ -20,10 +56,6 @@ function scrapeAndSend(port) {
   port.postMessage({"scraped": scrapedText, "url": url});
 };
 
-//Content Scraper
-const scrapeContent = function() {
-  return $('p').toArray().map(p => p.innerText).join(' ');
-};
 
 //Assumptions:
 //1 - all the content is in paragraphs
