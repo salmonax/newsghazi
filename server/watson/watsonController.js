@@ -18,7 +18,7 @@ module.exports.getEmotions = function(req, res, next) {
   // No error checking if first in chain; assumes url already set
   var params = {
     url: res.compoundContent.url
-  }
+  };
   alchemy_language.emotion(params, function (err, response) {
     if (err)
       console.log('error:', err);
@@ -35,7 +35,6 @@ module.exports.getTitle = function(req, res, next) {
   var parameters = {
     url: req.body.url
   };
-
   alchemy_language.title(parameters, function (err, response) {
     if (err) {
       console.log('error:', err);
@@ -43,6 +42,7 @@ module.exports.getTitle = function(req, res, next) {
       // console.log(JSON.stringify(response, null, 2));
       res.compoundContent = res.compoundContent || {};
       res.compoundContent['title'] = response;
+      // console.log(res.compoundContent, 'in get title');
       next();
     }
   });
@@ -59,8 +59,8 @@ module.exports.getKeywords = function(req, res, next) {
       console.log('error:', err);
     } else {
       res.compoundContent = res.compoundContent || {};
-      res.compoundContent['keywords'] = response;
-      // console.log(JSON.stringify(res.compoundContent));
+      res.compoundContent['keywords'] = response.keywords;
+      // console.log(res.compoundContent, 'inside get keywords!');
     }
     next();
   });
@@ -70,7 +70,8 @@ module.exports.getEntities = function(req, res, next) {
   var parameters = {
     url: req.body.url,
     maxRetrieve: 5,
-    sourceText: 'cleaned_or_raw'
+    // sourceText: 'cleaned_or_raw'
+
   };
 
   alchemy_language.entities(parameters, function (err, response) {
@@ -78,8 +79,9 @@ module.exports.getEntities = function(req, res, next) {
       console.log('error:', err);
     } else {
       res.compoundContent = res.compoundContent || {};
-      res.compoundContent['entities'] = response;
-      console.log(JSON.stringify(res.compoundContent));
+      res.compoundContent['entities'] = response.entities;
+      // console.log(res.compoundContent['entities'], 'inside entities!');
+
     }
     next();
   });
@@ -87,22 +89,23 @@ module.exports.getEntities = function(req, res, next) {
 
 
 module.exports.getRelated = function(req, res, next) {
-
+  console.log('inside get related');
   var params = {
     start: 'now-1M',
     end: 'now',
     count: 5,
     return: 'enriched.url.title'
-    // adjust search
   };
 
-  alchemy_data_news.getNews(params, function (err, news) {
+  alchemy_data_news.getNews(params, function (err, response) {
     if (err) {
       console.log('error:', err);
     } else {
+      console.log('inside getnews');
       res.compoundContent = res.compoundContent || {};
       res.compoundContent['relatedArticles'] = response;
-      console.log(JSON.stringify(news, null, 2));
+      console.log('gotpast res');
+
     }
     next();
   });
