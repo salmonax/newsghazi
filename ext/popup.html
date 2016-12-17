@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>NewsGhazi</title>
+    <link rel="stylesheet" href="./watson.css">
     <link rel="stylesheet" href="./style.css">
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
@@ -16,16 +17,14 @@
   <body>
 
   <div id="main">
-    <div id="component1" class="reliability component">
-      <label class="componentTitle">Reliability</label>
-      <br>
-      <div>
-        <div class="relImage"></div>
-        <div class="relText"></div>
-      </div>
+    <div id="component1" class="emotion component">
+    </div>   
+    <div id="component2" class="reliability component">
     </div>
-
-    <div id="component2" class="sentiment component">
+    <div id="component6" class="flesch component">
+      <label class="componentTitle">Flesch-Kincaid </label>
+    </div>  
+    <div id="component3" class="sentiment component">
       <label class="componentTitle">Sentiment</label>
       <br>
       <div class="sentimentwordCount"></div>
@@ -33,14 +32,14 @@
       <div class="sentimentMagnitude"></div>
     </div>
 
-    <div id="component3" class="keyWord component">
+    <div id="component4" class="keyWord component">
       <label class="componentTitle">Key Sentences</label>
       <br>
       <button id="">Find Strong Sentiments</button>
       <div class="image-result"></div>
     </div>
 
-    <div id="component4" class="relatedArticles component">
+    <div id="component5" class="relatedArticles component">
       <label class="componentTitle">Related Articles</label>
       <br>
       <div class="relatedArticles"></div>
