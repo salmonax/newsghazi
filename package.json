@@ -27,12 +27,14 @@
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "flesch-kincaid": "^1.0.0",
     "google-trends-api": "^3.0.1",
     "mongoose": "^4.7.1",
     "nodemon": "^1.11.0",
     "readline": "0.0.x",
     "request": "^2.79.0",
     "require": "^2.4.20",
+    "syllable": "^1.0.0",
     "twitter": "^1.5.0",
     "watson-developer-cloud": "^2.13.0"
   }

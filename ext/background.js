@@ -1,8 +1,8 @@
 
 // The following waits for a connection from the 
 // extension in order to make a reverse connection. 
-
 chrome.runtime.onConnect.addListener(function(portToBackground) {
+  console.log("COMMAND MADE");
   var portToExtension = chrome.runtime.connect({name:"newsgate"});
   portToExtension.postMessage({"method":'getContentAndUrl', "data": actions.getContentAndUrl()});
   portToBackground.onMessage.addListener(function(message) {
@@ -35,15 +35,12 @@ const actions = {
   }
 };
 
-
 // Sends url and scraped text:
 function scrapeAndSend(port) {
   var url = window.location.href;
-  var scrapedText = $('p').toArray().map(item => item.innerText).join(' ').replace(/[\r\n]/g, '');
+  var scrapedText = $('p, td').toArray().map(item => item.innerText).join(' ').replace(/[\r\n]/g, '');
   port.postMessage({"scraped": scrapedText, "url": url});
 };
-
-
 
 //returns an array of regex testeres to test against 
 var regexConstructor = function(mode){

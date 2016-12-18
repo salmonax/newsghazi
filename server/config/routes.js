@@ -25,24 +25,20 @@ module.exports = function (app, express) {
     res.json(res.compoundContent);
   });
 
-
-  // app.post('/api/ext', function(req, res, next) {
-  //   console.log(res);
-  // });
-  // app.post('/api/ext', newsController.isFakeNews , function(req,res,next){
-  //   res.json(res.compoundContent);
-  // });
-  app.post('/api/ext', newsController.passExtensionData, watsonController.getEmotions, function(req, res, next) {
+  app.post('/api/ext', newsController.passExtensionData, 
+    newsController.getFleschScore,
+    newsController.isFakeNews,
+    // googleLanguage.analyzeSentiment, 
+    watsonController.getEmotions, function(req, res, next) {
       // console.log(res.compoundContent.article);
-
+      console.log(res.compoundContent.article);
+      console.log(res.compoundContent.flesch);
       // console.log(res.compoundContent.sentiment);
-      // console.log(res.compoundContent.emotion);
-      res.compoundContent.articleLength = res.compoundContent.article.split(' ').length;
+      console.log(res.compoundContent.emotion);
       res.json(res.compoundContent);
   });
 
-  // app.post('/api/ext', function(req, res, next) {
-  //   var message = req.body;
-  //   console.log(req.body.scraped);
-  // });
+  // app.post('/apitest', watsonController.getTitle);
+  // app.get('/api/googleTrends', googleTrends.getGoogleTrends);
+  // app.get('/twitter', twitterSearch.getTweetsOnTopic);
 };
