@@ -1,28 +1,16 @@
-console.log('injected1');
-
-
 
 // The following waits for a connection from the 
 // extension in order to make a reverse connection. 
 
-chrome.extension.onConnect.addListener(function(portToBackground){
-  var portToExtension = chrome.extension.connect({name: "newsgate"});
+chrome.runtime.onConnect.addListener(function(portToBackground) {
+  var portToExtension = chrome.runtime.connect({name:"newsgate"});
   portToExtension.postMessage({"method":'getContentAndUrl', "data": actions.getContentAndUrl()});
-  portToBackground.onMessage.addListener(handleMessage);
+  portToBackground.onMessage.addListener(function(message) {
+    portToExtension.postMessage({"method": message.method, "data": actions[message.method]()});
+  });
 });
 
-
-//Event Listeners:
-// chrome.extension.onConnect.addListener(function(port){
-//   var reversePort = chrome.extension.connect({name: "newsgate"});
-//   port.onMessage.addListener(handleMessage.bind(null, reversePort)); //this is not working.
-//   //default behaviour on connect:
-//   reversePort.postMessage({"method":"getContent", "content": actions.scrapeAll(), "url":actions.getUrl()});
-// });
-
-  
 function handleMessage(msg, port) {
-  console.log(msg);
   var data = actions[msg.method]();
   port.postMessage({"method":msg.method, "data": data});
 };
@@ -55,6 +43,31 @@ function scrapeAndSend(port) {
   port.postMessage({"scraped": scrapedText, "url": url});
 };
 
+
+
+//returns an array of regex testeres to test against 
+var regexConstructor = function(mode){
+  const quantifiers = '(\\d+|a|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)';
+  const binders = '(-| |)'; //dash, empty or none
+  const multipliers = '(m|b|thousand|hundred|dozen|fold|times|x|X|percent|%)';
+  const significant = '\\d+[.|,]\\d+';
+  const numbers = '\\d+';
+  const quotations = '"';
+  const repetition = '(double|triple|quadruple)';
+  const frequency = '(once|twice|thrice)+(?= a|-)';
+
+  if (mode === 'business') {
+    var r1 = new RegExp( quantifiers +'(?=' + binders + multipliers  + ')', 'g');
+    var r2 = new RegExp(significant, 'g');
+    var r3 = new RegExp(repetition);
+    var r4 = new RegExp(frequency);
+    return [r1, r2, r3, r4];
+  } else if (mode === 'numbers') {
+    return [new RegExp(numbers)];
+  } else if (mode === 'quotations') {
+    return [new RegExp(quotations)];
+  }
+};
 
 //Assumptions:
 //1 - all the content is in paragraphs
