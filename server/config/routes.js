@@ -1,7 +1,7 @@
 var expanderController = require('../controllers/expanderController.js');
 var newsController = require('../controllers/newsController.js');
 var watsonController = require('../watson/watsonController.js');
-const googleTrends = require('../trends/googleTrends');
+// const googleTrends = require('../trends/googleTrends');
 // const aylien = require('../aylien/aylienController.js');
 // const googleLanguage = require('../googleLanguage/googleLanguageController.js');
 
@@ -45,8 +45,4 @@ module.exports = function (app, express) {
   //   var message = req.body;
   //   console.log(req.body.scraped);
   // });
-
-  app.post('/apitest', watsonController.getTitle);
-  app.get('/api/googleTrends', googleTrends.getGoogleTrends);
-  app.get('/twitter', twitterSearch.getTweetsOnTopic);
 };

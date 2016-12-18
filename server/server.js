@@ -2,9 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const port = 8000;
 const app = express();
-const googleTrends = require('./trends/googleTrends');
-const twitterSearch = require('./trends/twitterTrends');
-const watson = require('./watson/watsonController');
 
 var dbURI = 'mongodb://localhost/newsgate'
 mongoose.connect(dbURI);
