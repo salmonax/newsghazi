@@ -3,7 +3,7 @@ var newsController = require('../controllers/newsController.js');
 var watsonController = require('../watson/watsonController.js');
 // const googleTrends = require('../trends/googleTrends');
 // const aylien = require('../aylien/aylienController.js');
-// const googleLanguage = require('../googleLanguage/googleLanguageController.js');
+const googleLanguage = require('../googleLanguage/googleLanguageController.js');
 
 module.exports = function (app, express) {
 
@@ -28,12 +28,13 @@ module.exports = function (app, express) {
   app.post('/api/ext', newsController.passExtensionData, 
     newsController.getFleschScore,
     newsController.isFakeNews,
-    // googleLanguage.analyzeSentiment, 
-    watsonController.getEmotions, function(req, res, next) {
+    googleLanguage.analyzeSentiment, 
+    watsonController.getEmotions, 
+    function(req, res, next) {
       // console.log(res.compoundContent.article);
-      console.log(res.compoundContent.article);
+      // console.log(res.compoundContent.article);
       console.log(res.compoundContent.flesch);
-      // console.log(res.compoundContent.sentiment);
+      console.log(res.compoundContent.sentiment);
       console.log(res.compoundContent.emotion);
       res.json(res.compoundContent);
   });

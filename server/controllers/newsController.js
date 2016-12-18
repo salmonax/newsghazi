@@ -33,9 +33,9 @@ module.exports = {
     }
   },
   passExtensionData: function(req, res, next) {
-    console.log(req.body);
-    console.log("ONE: ", req.body.url);
-    console.log("TWO: ", req.body.scraped);
+    // console.log(req.body);
+    // console.log("ONE: ", req.body.url);
+    // console.log("TWO: ", req.body.scraped);
     if (req.body.url && req.body.scraped) {
       res.compoundContent = res.compoundContent || {};
       res.compoundContent.url = req.body.url;

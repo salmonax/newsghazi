@@ -38,13 +38,32 @@ body {
   font-size:20px;
 }
 
+#radial-graph {
+  font-size: 12px;
+  margin-left: 4px;
+  float: left;
+  width: 40%;
+}
+
+#emotion-container, #radial-graph {
+  margin-top: 0px;
+}
+
 /* Watson CSS Tweaks */
+
+.summary-emotion-graph {
+  width: 50%;
+  float: left;
+}
 
 .summary-emotion-graph--row {
   margin-top: 0px;
 }
 
 .summary-emotion-graph {
-
   margin-bottom: 5px;
+}
+
+svg.sentiment-svg {
+  margin-top: 0px;
 }
