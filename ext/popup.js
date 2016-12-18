@@ -31,23 +31,16 @@ $(function() {
 // The following will open a connection with the active tab
 // when the extension is open
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-  chrome.tabs.connect(tabs[0].id, {name: "background"});
-});
-
-//add event listener on connect
-chrome.extension.onConnect.addListener(function(portToExtension){
-  portToExtension.onMessage.addListener(handleMessage);
-});
-
-chrome.commands.onCommand.addListener(function(command) {
-  if(command === 'getUserSelectedText') {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {method: "getUserSelectedText"}, function(res) {
-      console.log('got the command.');
-      console.log(res.data);
-    });
+  var portToBackground = chrome.tabs.connect(tabs[0].id, {name: "background"});
+  chrome.commands.onCommand.addListener(function(command) {
+    if(command === 'getUserSelectedText') {
+      portToBackground.postMessage({method: "getUserSelectedText"});
+    }
   });
-  }
+});
+
+chrome.runtime.onConnect.addListener(function(portToExtension) { 
+  portToExtension.onMessage.addListener(handleMessage);
 });
 
 function handleMessage(msg) {
@@ -95,11 +88,10 @@ function failToPopulate(xhr, status, errorThrown) {
   // alert('fail');
   console.log( "Error: " + errorThrown );
   console.log( "Status: " + status );
-  console.log()
   console.dir(xhr);
 }
 
-function postTextAndUrl(data) {
+function postToServer(data) {
   // alert(data);
   return $.ajax({
     url: 'http://localhost:8000/api/ext',

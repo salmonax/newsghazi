@@ -44,8 +44,8 @@ module.exports = function (app, express) {
   // });
 
   app.post('/api/ext', function(req, res, next) {
-    var message = req.body;
-    console.log(req.body.scraped);
+    console.log(req);
+    console.log(req.body.data.scraped);
   });
 
   app.post('/apitest', watsonController.getTitle);
