@@ -13,11 +13,11 @@ var initJSON = {
   sadness: '0.00' };
 
 var updateJSON = { 
-  anger: '0.50',
-  disgust: '0.44',
-  fear: '0.23',
-  joy: '0.83',
-  sadness: '0.35' 
+  anger: '0.44',
+  disgust: '0.52',
+  fear: '0.12',
+  joy: '0.21',
+  sadness: '0.50' 
 };
 
 const EMOTION_COLORS = {
@@ -28,13 +28,22 @@ const EMOTION_COLORS = {
   sadness: '#086DB2'
 };
 
+// 44 52 12 21 50
+
 renderRadialGraph(initJSON);
 renderSentimentGraph(dummySentences);
 getBlendedColor(updateJSON);
 
-// This does a bit of bespoke magic and blends the colors together
-// naively but semi-acceptably
-function getBlendedColor(docEmotions) {
+setTimeout(() => updateRadialGraph(updateJSON), 20);
+setTimeout(() => updateRadialGraph(getSlopedEmotions(updateJSON, (i) => {
+  return (-0.1*i+1)*1.4;
+})), 500);
+
+function getSlopedEmotions(docEmotions,weightEquation) {
+  // Uses my default color-weighting equation if no function is passed
+  weightEquation = (typeof weightEquation === 'function') ?
+    weightEquation :
+    i => -0.40*i+1.2;
   var emotionKeys = Object.keys(docEmotions);
   var emotionCount = docEmotions.length;
 
@@ -43,14 +52,21 @@ function getBlendedColor(docEmotions) {
               .map((weight, i) => [emotionKeys[i], weight])
               .sort((a,b) => b[1] - a[1]);
   var slopedTuples = sortedTuples.map((tuple,i) => {
-    tuple[1] = Math.max(tuple[1]*(-0.40*i+1.2),0);
+    tuple[1] = Math.min(Math.max(tuple[1]*weightEquation(i),0),1);
     return tuple;
   });
 
-  docEmotions = slopedTuples.reduce((obj, tuple) => {
+  return slopedTuples.reduce((obj, tuple) => {
     obj[tuple[0]] = tuple[1];
     return obj;
-  },{});
+  },Object.assign({},docEmotions));
+}
+
+// This does a bit of bespoke magic and blends the colors together
+// naively but semi-acceptably
+function getBlendedColor(docEmotions) {
+  var emotionKeys = Object.keys(docEmotions);
+  docEmotions = getSlopedEmotions(docEmotions, i => -0.40*i+1.2);
 
   var emotionSum = emotionKeys.reduce((sum, emotion) => { 
     return sum += parseFloat(docEmotions[emotion]); 
@@ -89,8 +105,6 @@ function updateRadialGraph(docEmotions) {
     .attr('fill', getBlendedColor(docEmotions));
 ;
 }
-
-setTimeout(() => updateRadialGraph(updateJSON), 0);
 
 function renderRadialGraph(docEmotions) {
   var weights = Object.keys(docEmotions).map(key => parseFloat(docEmotions[key]));

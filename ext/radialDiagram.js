@@ -1,5 +1,29 @@
 /*** Radial Graph Code ***/
 
+function getSlopedEmotions(docEmotions,weightEquation) {
+  // Uses default color-weighting equation if no function is passed
+  weightEquation = (typeof weightEquation === 'function') ?
+    weightEquation :
+    i => -0.40*i+1.2;
+  var emotionKeys = Object.keys(docEmotions);
+  var emotionCount = docEmotions.length;
+
+  var weights = emotionKeys.map(key => parseFloat(docEmotions[key]));
+  var sortedTuples = weights
+              .map((weight, i) => [emotionKeys[i], weight])
+              .sort((a,b) => b[1] - a[1]);
+  var slopedTuples = sortedTuples.map((tuple,i) => {
+    // Make sure to clamp value to within 0 and 1:
+    tuple[1] = Math.min(Math.max(tuple[1]*weightEquation(i),0),1);
+    return tuple;
+  });
+
+  return slopedTuples.reduce((obj, tuple) => {
+    obj[tuple[0]] = tuple[1];
+    return obj;
+  },Object.assign({},docEmotions));
+}
+
 // This does a bit of bespoke magic and blends the colors together
 // naively but semi-acceptably
 function getBlendedColor(docEmotions) {
@@ -12,21 +36,7 @@ function getBlendedColor(docEmotions) {
   };
 
   var emotionKeys = Object.keys(docEmotions);
-  var emotionCount = docEmotions.length;
-
-  var weights = emotionKeys.map(key => parseFloat(docEmotions[key]));
-  var sortedTuples = weights
-              .map((weight, i) => [emotionKeys[i], weight])
-              .sort((a,b) => b[1] - a[1]);
-  var slopedTuples = sortedTuples.map((tuple,i) => {
-    tuple[1] = Math.max(tuple[1]*(-0.40*i+1.2),0);
-    return tuple;
-  });
-
-  docEmotions = slopedTuples.reduce((obj, tuple) => {
-    obj[tuple[0]] = tuple[1];
-    return obj;
-  },{});
+  docEmotions = getSlopedEmotions(docEmotions, i => -0.40*i+1.2);
 
   var emotionSum = emotionKeys.reduce((sum, emotion) => { 
     return sum += parseFloat(docEmotions[emotion]); 
@@ -52,6 +62,8 @@ function getBlendedColor(docEmotions) {
 // This updates the graph after it has already been rendered
 // With a basic animation
 function updateRadialGraph(docEmotions) {
+  // Aesthetically massage the graphical output a tiny amount
+  docEmotions = getSlopedEmotions(docEmotions, i => (-0.04*i+1)*1.4);
   var keys = Object.keys(docEmotions);
   var weights = keys.map(key => parseFloat(docEmotions[key]));
   var perimeterPath = d3.select('.radial-values');

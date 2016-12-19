@@ -8,6 +8,9 @@ $(function() {
     'sadness': '0.00'
   };
 
+  $('#main').after('<div id="spinner"></div>');
+  $('#spinner').load('spin.svg');
+
   $('.emotion.component').load('emotion.html', function() {
     updateEmotions(initEmotions);
     initRadialGraph(initEmotions);
@@ -121,7 +124,7 @@ $(function() {
     } 
     $('.reliability.component').append(rating);
     $('.flesch.component').append(json.flesch);
-    $
+    $('#spinner').remove();
   }
 
   function failToPopulate(xhr, status, errorThrown) {
@@ -139,5 +142,5 @@ $(function() {
       dataType: 'json'
     });
   };
-  
+
 });

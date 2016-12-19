@@ -49,11 +49,26 @@ body {
   margin-top: 0px;
 }
 
+#spinner {
+  -webkit-transform: scale(0.5, 0.5);
+  -webkit-transform-origin: right top;
+  position: absolute;
+  right: 140px;
+  top: 200px;
+  opacity: 0.5;
+}
+
 /* Watson CSS Tweaks */
 
 .summary-emotion-graph {
   width: 50%;
   float: left;
+}
+.sentiment.component {
+  min-height: 130px;
+}
+.reliability.component {
+  min-height: 62px;
 }
 
 .summary-emotion-graph--row {
