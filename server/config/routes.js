@@ -1,6 +1,7 @@
 var expanderController = require('../controllers/expanderController.js');
 var newsController = require('../controllers/newsController.js');
 var watsonController = require('../watson/watsonController.js');
+var indicoController = require('../indico/indicoController.js');
 // const googleTrends = require('../trends/googleTrends');
 // const aylien = require('../aylien/aylienController.js');
 const googleLanguage = require('../googleLanguage/googleLanguageController.js');
@@ -28,10 +29,10 @@ module.exports = function (app, express) {
   app.post('/api/ext', newsController.passExtensionData, 
     newsController.getFleschScore,
     newsController.isFakeNews,
+    indicoController.getPolitics,
     googleLanguage.analyzeSentiment, 
     watsonController.getEmotions, 
     function(req, res, next) {
-      // console.log(res.compoundContent.article);
       // console.log(res.compoundContent.article);
       console.log(res.compoundContent.flesch);
       console.log(res.compoundContent.sentiment);

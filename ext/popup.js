@@ -40,6 +40,35 @@ $(function() {
     });
   }
 
+  function updatePolitics(politics) {
+    var libPercent = politics.Liberal + politics.Green;
+    var conPercent = politics.Conservative;
+    var randPercent = politics.Libertarian;
+
+    applyTag(libPercent, 'Liberal');
+    applyTag(conPercent, 'Conservative');
+    applyTag(randPercent, 'Libertarian');
+  }
+
+  function applyTag(percent, tag){
+    var text;
+
+    if (percent >= .34 && percent < .5) {
+      text = 'Maybe ' + tag;
+    } else if (percent >= .5 && percent < .8) {
+      text = 'Somewhat ' + tag;
+    } else if (percent >= .8) {
+      text = 'Strongly ' + tag;
+    }
+
+    if (text !== undefined) {
+      $tag = $('<div></div>');
+      $tag.text(text);
+      $tag.addClass(tag, 'tag');
+      $('.politicsDisplay').append($tag);
+    }
+  }
+
   // The following will open a connection with the active tab
   // when the extension is open
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -82,6 +111,9 @@ $(function() {
 
     renderSentimentGraph(sentences);
 
+    console.log('politics', json.politics);
+    updatePolitics(json.politics);
+
     if ((json.fake.rating.score + '') === '0') {
       rating = 'This page does not exist in our Fake News blacklist.';
     } else if ((json.fake.rating.score + '') === '100') {
@@ -89,6 +121,7 @@ $(function() {
     } 
     $('.reliability.component').append(rating);
     $('.flesch.component').append(json.flesch);
+    $
   }
 
   function failToPopulate(xhr, status, errorThrown) {

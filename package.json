@@ -29,6 +29,7 @@
     "express": "^4.14.0",
     "flesch-kincaid": "^1.0.0",
     "google-trends-api": "^3.0.1",
+    "indico.io": "^0.10.5",
     "mongoose": "^4.7.1",
     "nodemon": "^1.11.0",
     "readline": "0.0.x",

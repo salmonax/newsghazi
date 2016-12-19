@@ -64,6 +64,34 @@ body {
   margin-bottom: 5px;
 }
 
+
 svg.sentiment-svg {
   margin-top: 0px;
+}
+
+.politicsDisplay {
+  margin-top: 0px;
+}
+
+.political div {
+  width: 160px;
+  text-align: center;
+  margin-top: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+}
+
+.Liberal {
+  background-color: #086DB2;
+}
+
+.Conservative {
+  background-color: #E80521;
+}
+
+.Libertarian {
+  background-color: #ffd000;
 }
